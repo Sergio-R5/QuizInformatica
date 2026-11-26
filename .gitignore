@@ -1,0 +1,19 @@
+# Gradle / build
+.gradle/
+build/
+**/build/
+.kotlin/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+.cxx/
+captures/
+.externalNativeBuild/
+
+# Configuración local (ruta del SDK de cada PC)
+local.properties
+
+# Sistema
+.DS_Store
+Thumbs.db
