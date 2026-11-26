@@ -1,19 +1,44 @@
-# Gradle / build
-.gradle/
-build/
-**/build/
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
 .kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
 
-# Android Studio / IntelliJ
-.idea/
-*.iml
-.cxx/
-captures/
-.externalNativeBuild/
+# Metro
+.metro-health-check*
 
-# Configuración local (ruta del SDK de cada PC)
-local.properties
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
 
-# Sistema
+# macOS
 .DS_Store
-Thumbs.db
+*.pem
+
+# local env files
+.env*.local
+
+# typescript
+*.tsbuildinfo
+
+# generated native folders
+/ios
+/android
+
+# Herramientas locales
+.claude/
