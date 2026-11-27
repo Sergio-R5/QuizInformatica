@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Boton, Etiqueta, Pantalla, Tarjeta, Texto } from '../components/ui';
+import { Boton, Etiqueta, Pantalla, Tarjeta, Texto, useEscala } from '../components/ui';
 import { TOTAL_PREGUNTAS } from '../logic/quiz';
 import { useTema } from '../theme/TemaContext';
 import { alfa, TEMAS } from '../theme/temas';
@@ -11,6 +11,7 @@ const OPCIONES_RAPIDAS = [5, 10, 15, 20, TOTAL_PREGUNTAS];
 
 export default function InicioScreen({ navigation }) {
   const { tema, claveTema, cambiarTema } = useTema();
+  const escala = useEscala(); // achica los textos grandes en pantallas angostas
   // Estado local simple: cantidad de preguntas elegida.
   const [cantidad, setCantidad] = useState(10);
 
@@ -28,7 +29,7 @@ export default function InicioScreen({ navigation }) {
         <View style={[estilos.logo, { backgroundColor: tema.primario, borderColor: tema.acento }]}>
           <Texto style={estilos.emojiLogo}>🧠</Texto>
         </View>
-        <Texto style={estilos.titulo}>Quiz Informática</Texto>
+        <Texto ajustar style={[estilos.titulo, { fontSize: 32 * escala, lineHeight: 40 * escala }]}>Quiz Informática</Texto>
         <Texto suave style={estilos.subtitulo}>
           {TOTAL_PREGUNTAS} preguntas · 6 módulos · corrección al instante
         </Texto>
@@ -40,7 +41,9 @@ export default function InicioScreen({ navigation }) {
           <View style={estilos.filaContador}>
             <BotonRedondo texto="−" onPress={() => cambiarCantidad(-1)} deshabilitado={cantidad <= 1} />
             <View style={estilos.contador}>
-              <Texto style={[estilos.numero, { color: tema.primario }]}>{cantidad}</Texto>
+              <Texto ajustar style={[estilos.numero, { color: tema.primario, fontSize: 52 * escala, lineHeight: 62 * escala }]}>
+                {cantidad}
+              </Texto>
               <Texto suave>de {TOTAL_PREGUNTAS}</Texto>
             </View>
             <BotonRedondo
@@ -59,7 +62,7 @@ export default function InicioScreen({ navigation }) {
                   onPress={() => setCantidad(n)}
                   style={[estilos.chip, { backgroundColor: activo ? tema.primario : alfa(tema.primario, 0.12) }]}
                 >
-                  <Texto style={[estilos.textoChip, { color: activo ? tema.sobrePrimario : tema.primario }]}>
+                  <Texto ajustar style={[estilos.textoChip, { color: activo ? tema.sobrePrimario : tema.primario }]}>
                     {n === TOTAL_PREGUNTAS ? 'Todas' : n}
                   </Texto>
                 </Pressable>
@@ -139,12 +142,12 @@ const estilos = StyleSheet.create({
   bloque: { marginTop: 18 },
   tituloBloque: { fontSize: 17, fontWeight: '800' },
   filaContador: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10 },
-  contador: { alignItems: 'center' },
+  contador: { alignItems: 'center', flex: 1, paddingHorizontal: 8 },
   numero: { fontSize: 52, fontWeight: '900' },
-  redondo: { width: 56, height: 56, borderRadius: 28, alignItems: 'center', justifyContent: 'center' },
+  redondo: { width: 52, height: 52, borderRadius: 26, alignItems: 'center', justifyContent: 'center' },
   textoRedondo: { fontSize: 30, fontWeight: '800', lineHeight: 34 },
   filaChips: { flexDirection: 'row', gap: 8 },
-  chip: { flex: 1, borderRadius: 12, paddingVertical: 10, alignItems: 'center' },
+  chip: { flex: 1, borderRadius: 12, paddingVertical: 10, paddingHorizontal: 4, alignItems: 'center' },
   textoChip: { fontWeight: '800' },
   nota: { marginTop: 10, fontSize: 13 },
   grillaTemas: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 12 },

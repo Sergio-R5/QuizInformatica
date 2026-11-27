@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import { Animated, FlatList, StyleSheet, View } from 'react-native';
-import { Boton, Etiqueta, Pantalla, Tarjeta, Texto } from '../components/ui';
+import { Boton, Etiqueta, Pantalla, Tarjeta, Texto, useEscala } from '../components/ui';
 import { almacen } from '../logic/almacen';
 import { promedio } from '../logic/medicion';
 import { LETRAS, mensajeFinal } from '../logic/quiz';
@@ -13,6 +13,7 @@ const CLAVE_RECORD = 'mejorPorcentaje';
 
 export default function ResultadosScreen({ navigation, route }) {
   const { tema } = useTema();
+  const escala = useEscala(); // achica los textos grandes en pantallas angostas
   const { respuestas = [], ronda = 1, esRepaso = false, mejorRacha = 0, tiempos = [] } = route.params ?? {};
 
   // Todo derivado de los parámetros: no se duplica en otro estado.
@@ -54,12 +55,16 @@ export default function ResultadosScreen({ navigation, route }) {
 
   const cabecera = (
     <View>
-      <Texto style={estilos.titulo}>{esRepaso ? 'Resultado del repaso' : 'Informe final'}</Texto>
+      <Texto ajustar style={[estilos.titulo, { fontSize: 28 * escala, lineHeight: 36 * escala }]}>
+        {esRepaso ? 'Resultado del repaso' : 'Informe final'}
+      </Texto>
 
       <Tarjeta style={estilos.bloque}>
         <View style={estilos.filaPuntaje}>
-          <Texto style={[estilos.porcentaje, { color: colorPuntaje }]}>{porcentaje}%</Texto>
-          <Texto suave style={estilos.fraccion}>{correctas}/{total}</Texto>
+          <Texto ajustar style={[estilos.porcentaje, { color: colorPuntaje, fontSize: 56 * escala, lineHeight: 66 * escala }]}>
+            {porcentaje}%
+          </Texto>
+          <Texto suave ajustar style={estilos.fraccion}>{correctas}/{total}</Texto>
         </View>
         <View style={[estilos.pista, { backgroundColor: tema.borde }]}>
           <Animated.View style={[estilos.relleno, { backgroundColor: colorPuntaje, transform: [{ scaleX: barra }] }]} />
@@ -119,8 +124,8 @@ export default function ResultadosScreen({ navigation, route }) {
 function Estadistica({ valor, titulo, color }) {
   return (
     <Tarjeta style={estilos.stat}>
-      <Texto style={[estilos.valorStat, { color }]}>{valor}</Texto>
-      <Texto suave style={estilos.tituloStat} numberOfLines={1}>{titulo}</Texto>
+      <Texto ajustar style={[estilos.valorStat, { color }]}>{valor}</Texto>
+      <Texto suave ajustar style={estilos.tituloStat}>{titulo}</Texto>
     </Tarjeta>
   );
 }
@@ -148,15 +153,15 @@ const estilos = StyleSheet.create({
   bloque: { marginTop: 14 },
   separado: { marginTop: 10 },
   filaPuntaje: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'center', gap: 10 },
-  porcentaje: { fontSize: 56, fontWeight: '900' },
+  porcentaje: { fontSize: 56, fontWeight: '900', flexShrink: 1 },
   fraccion: { fontSize: 20 },
   pista: { height: 14, borderRadius: 7, overflow: 'hidden', marginTop: 6 },
   relleno: { height: '100%', width: '100%', transformOrigin: 'left' },
   mensaje: { textAlign: 'center', fontSize: 17, fontWeight: '800', marginTop: 12 },
   record: { textAlign: 'center', marginTop: 6 },
   filaStats: { flexDirection: 'row', gap: 10 },
-  stat: { flex: 1, alignItems: 'center', paddingHorizontal: 6 },
-  valorStat: { fontSize: 24, fontWeight: '900' },
+  stat: { flex: 1, alignItems: 'center', paddingHorizontal: 6, paddingVertical: 12 },
+  valorStat: { fontSize: 24, lineHeight: 30, fontWeight: '900' },
   tituloStat: { fontSize: 12 },
   medicion: { textAlign: 'center', marginTop: 10, fontSize: 12 },
   perfecto: { fontSize: 20, fontWeight: '900' },

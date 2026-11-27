@@ -5,7 +5,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Alert, Animated, Pressable, ScrollView, StyleSheet, View } from 'react-native';
-import { Boton, Etiqueta, Pantalla, Tarjeta, Texto } from '../components/ui';
+import { Boton, Etiqueta, Pantalla, Tarjeta, Texto, useEscala } from '../components/ui';
 import { ahora } from '../logic/medicion';
 import { corregir, LETRAS, nuevoQuiz, primeraOracion, quizDeRepaso } from '../logic/quiz';
 import { useTema } from '../theme/TemaContext';
@@ -13,6 +13,7 @@ import { alfa } from '../theme/temas';
 
 export default function QuizScreen({ navigation, route }) {
   const { tema } = useTema();
+  const escala = useEscala(); // achica los textos grandes en pantallas angostas
   const { cantidad = 10, repasarIds = null, ronda = 1 } = route.params ?? {};
 
   // Inicialización perezosa: la función se ejecuta UNA sola vez al montar la pantalla,
@@ -158,7 +159,7 @@ export default function QuizScreen({ navigation, route }) {
       {/* ---------- Pregunta ---------- */}
       <ScrollView ref={scroll} style={estilos.scroll} contentContainerStyle={estilos.contenido}>
         <Etiqueta texto={pregunta.modulo} color={tema.acento} />
-        <Texto style={estilos.pregunta}>{pregunta.texto}</Texto>
+        <Texto style={[estilos.pregunta, { fontSize: 21 * escala, lineHeight: 28 * escala }]}>{pregunta.texto}</Texto>
 
         {pregunta.alternativas.map((texto, i) => (
           <Alternativa
@@ -235,7 +236,7 @@ function Retroalimentacion({ pregunta, seleccion, medicion }) {
 
   return (
     <Tarjeta colorBorde={color} style={estilos.retro}>
-      <Texto style={[estilos.tituloRetro, { color }]}>{acierto ? '🎉 ¡Correcto!' : '❌ Incorrecto'}</Texto>
+      <Texto ajustar style={[estilos.tituloRetro, { color }]}>{acierto ? '🎉 ¡Correcto!' : '❌ Incorrecto'}</Texto>
 
       {acierto ? (
         <>
@@ -283,10 +284,10 @@ const estilos = StyleSheet.create({
     marginBottom: 10, gap: 12, overflow: 'hidden',
   },
   circulo: { width: 34, height: 34, borderRadius: 17, alignItems: 'center', justifyContent: 'center' },
-  letra: { fontWeight: '900', fontSize: 15 },
+  letra: { fontWeight: '900', fontSize: 15, lineHeight: 20 },
   textoAlternativa: { flex: 1, fontSize: 16, lineHeight: 22 },
   retro: { marginTop: 4 },
-  tituloRetro: { fontSize: 22, fontWeight: '900', marginBottom: 6 },
+  tituloRetro: { fontSize: 22, lineHeight: 28, fontWeight: '900', marginBottom: 6 },
   subRetro: { fontWeight: '800', marginTop: 8 },
   detalle: { fontWeight: '700', marginTop: 4, lineHeight: 20 },
   explicacion: { marginTop: 2, lineHeight: 20 },

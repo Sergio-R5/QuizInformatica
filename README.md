@@ -42,6 +42,8 @@ Inicio --navigate--> Inicio, Quiz --replace--> Inicio, Resultados --replace--> I
 | Apertura en frío de la app | 5,5 a 8,5 s (emulador por software) |
 
 > Estos valores son del emulador, que dibuja sin GPU. En un teléfono real deberían ser bastante menores: **la medición en teléfono físico queda pendiente** y es la que pide la pauta.
+- **Tipografía incluida (Inter)**: en un teléfono de gama baja los números en negrita se veían cortados porque la marca reemplaza la fuente del sistema. Se incrustó la fuente Inter con el plugin `expo-font` (archivos en `assets/fonts`, licencia OFL), así la app se ve igual en cualquier equipo. El tema Matrix usa la fuente monoespaciada del sistema.
+- **Pantallas pequeñas**: los textos grandes se escalan según el ancho (`useWindowDimensions`), los números usan `adjustsFontSizeToFit` y la letra grande del sistema se limita a 1,3x (`maxFontSizeMultiplier`). Probado en 360×640 dp con letra a 1,3x.
 - Las animaciones usan `useNativeDriver: true` (corren en el hilo nativo y no bloquean JavaScript), y la lista de errores usa `FlatList`.
 
 ## Estructura
